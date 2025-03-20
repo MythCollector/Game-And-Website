@@ -1,7 +1,7 @@
 // Game variables
 let energy = 100;
 let hunger = 50;
-let lastState = null; // Stores the previous state for undo
+let history = []; // Stores multiple past states
 
 // Play background music when "Start Game" is clicked
 document.getElementById("start-button").addEventListener("click", function() {
@@ -21,17 +21,17 @@ function updateHUD() {
 
 // Store current game state before making a change
 function saveState() {
-    lastState = {
+    history.push({
         energy: energy,
         hunger: hunger,
         story: document.getElementById("story-text").textContent,
         choicesHTML: document.getElementById("choices").innerHTML
-    };
+    });
 }
 
 // Handle choices
 function chooseOption(option) {
-    saveState(); // Save the previous state before making a change
+    saveState(); // Save the current state before making changes
 
     let storyText = document.getElementById("story-text");
     let choicesDiv = document.getElementById("choices");
@@ -47,6 +47,14 @@ function chooseOption(option) {
         storyText.textContent = "You venture into the trees, feeling the damp leaves beneath your paws.";
         hunger -= 10;
         choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(4)">Search for food</button>`;
+    } else if (option === 3) {
+        storyText.textContent = "You keep moving forward, feeling the wind against your fur.";
+        energy -= 5;
+        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(5)">Look around</button>`;
+    } else if (option === 4) {
+        storyText.textContent = "You sniff the air and spot a small prey animal nearby.";
+        hunger += 10;
+        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(6)">Attempt to catch it</button>`;
     }
 
     updateHUD();
@@ -54,7 +62,8 @@ function chooseOption(option) {
 
 // Undo last choice
 document.getElementById("undo-button").addEventListener("click", function() {
-    if (lastState) {
+    if (history.length > 0) {
+        let lastState = history.pop(); // Go back one step
         energy = lastState.energy;
         hunger = lastState.hunger;
         document.getElementById("story-text").textContent = lastState.story;
