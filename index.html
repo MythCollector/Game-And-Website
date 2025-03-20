@@ -18,16 +18,25 @@
     </div>
 
     <!-- Main Game Screen -->
-    <div id="game-screen" style="display: none;">
+    <div id="game-screen">
+        <!-- Sidebar HUD (For Player Stats and Undo Button) -->
         <div id="hud">
             <p>🐾 Energy: <span id="energy">100</span></p>
             <p>🍖 Hunger: <span id="hunger">50</span></p>
+            <button id="undo-button">Undo</button>
         </div>
 
+        <!-- Character Image Space -->
+        <div id="character-space">
+            <img id="character-img" src="character-placeholder.png" alt="Character">
+        </div>
+
+        <!-- Story Area -->
         <div id="story">
             <p id="story-text">You awaken in a dense forest, the scent of damp earth filling your nostrils. A path lies ahead...</p>
         </div>
 
+        <!-- Choices Area -->
         <div id="choices">
             <button class="choice-btn" onclick="chooseOption(1)">Follow the path</button>
             <button class="choice-btn" onclick="chooseOption(2)">Explore the trees</button>
