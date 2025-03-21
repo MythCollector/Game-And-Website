@@ -13,16 +13,16 @@
         <h1>Therian Quest</h1>
         <button id="start-button">Start Game</button>
         <audio id="bg-music" loop>
-    <source src="WildWilderness.mp3" type="audio/mpeg">
-</audio>
-
+            <source src="WildWilderness.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
     <!-- Main Game Screen -->
     <div id="game-screen">
         <div id="hud">
             <p>🐾 Species: <span id="species">???</span></p>
-            <p>🎨 Fur Color: <span id="fur-color">???</span></p>
+            <p>🖌️ Body Type: <span id="skin-type">???</span></p>
+            <p>🎨 Body Color: <span id="fur-color">???</span></p>
             <p>👀 Eye Color: <span id="eye-color">???</span></p>
             <p>🐾 Energy: <span id="energy">100</span></p>
             <p>🍖 Hunger: <span id="hunger">50</span></p>
@@ -44,10 +44,10 @@
         <h2>You See Your Reflection...</h2>
         <p>What are you?</p>
         <input type="text" id="species-input" placeholder="Enter your species">
-             <p>Do you have fur/skin/feathers/scales?</p>
+        <p>Do you have fur, skin, feathers, or scales?</p>
         <input type="text" id="skin-type-input" placeholder="Enter fur/skin/feathers/scales">
-        <p>What color are your fur/skin/feathers/scales?</p>
-        <input type="text" id="fur-color-input" placeholder="Enter fur/skin/feathers/scales color">
+        <p>What color are your fur, skin, feathers, or scales?</p>
+        <input type="text" id="fur-color-input" placeholder="Enter color">
         <p>What color are your eyes?</p>
         <input type="text" id="eye-color-input" placeholder="Enter eye color">
         <button id="confirm-identity">Confirm Identity</button>
@@ -56,4 +56,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
