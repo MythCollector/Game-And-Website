@@ -13,13 +13,16 @@
         <h1>Therian Quest</h1>
         <button id="start-button">Start Game</button>
         <audio id="bg-music" loop>
-            <source src="WildWilderness.mp3" type="audio/mpeg">
+            <source src="background-music.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- Main Game Screen (No character image at first) -->
+    <!-- Main Game Screen -->
     <div id="game-screen">
         <div id="hud">
+            <p>🐾 Species: <span id="species">???</span></p>
+            <p>🎨 Fur Color: <span id="fur-color">???</span></p>
+            <p>👀 Eye Color: <span id="eye-color">???</span></p>
             <p>🐾 Energy: <span id="energy">100</span></p>
             <p>🍖 Hunger: <span id="hunger">50</span></p>
             <button id="undo-button">Undo</button>
@@ -35,8 +38,19 @@
         </div>
     </div>
 
- 
+    <!-- Identity Form at the Lake -->
+    <div id="identity-form">
+        <h2>You See Your Reflection...</h2>
+        <p>What are you?</p>
+        <input type="text" id="species-input" placeholder="Enter your species">
+        <p>What color is your fur?</p>
+        <input type="text" id="fur-color-input" placeholder="Enter fur color">
+        <p>What color are your eyes?</p>
+        <input type="text" id="eye-color-input" placeholder="Enter eye color">
+        <button id="confirm-identity">Confirm Identity</button>
+    </div>
 
     <script src="script.js"></script>
 </body>
 </html>
+
