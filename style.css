@@ -21,98 +21,54 @@ body, html {
     background: rgba(0, 0, 0, 0.5);
 }
 
-/* Start button */
-#start-button {
-    font-size: 24px;
-    padding: 10px 20px;
-    border: none;
-    background: #ffcc00;
-    color: black;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#start-button:hover {
-    background: #ffaa00;
-    transform: scale(1.1);
-}
-
 /* Game Screen */
 #game-screen {
     display: none;
-    width: 100%;
-    height: 100vh;
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    height: 100vh;
     background: rgba(0, 0, 0, 0.5);
-    color: white;
+    padding-top: 60px;
 }
 
 /* Sidebar HUD */
 #hud {
     position: absolute;
-    top: 20px;
-    left: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    padding: 15px;
+    top: 10px;
+    right: 10px;
+    width: 200px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
     border-radius: 5px;
     text-align: left;
-}
-
-#hud p {
-    margin: 5px;
-    font-size: 18px;
-}
-
-/* Undo Button */
-#undo-button {
-    margin-top: 10px;
-    font-size: 16px;
-    padding: 5px 10px;
-    background: #ff4d4d;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-#undo-button:hover {
-    background: #d63030;
 }
 
 /* Story Box */
 #story {
     width: 60%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 10px;
-    margin-bottom: 20px;
-}
-
-#story-text {
-    font-size: 20px;
+    margin-top: 50px;
 }
 
 /* Choice Buttons */
 .choice-btn {
     font-size: 18px;
     padding: 10px 20px;
-    margin: 10px;
     border: none;
     background: #ffcc00;
     color: black;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .choice-btn:hover {
     background: #ffaa00;
-    transform: scale(1.1);
 }
 
-/* Hide the Identity Form at the Start */
+/* Identity Form */
 #identity-form {
     display: none;
     position: absolute;
@@ -123,37 +79,4 @@ body, html {
     align-items: center;
     justify-content: center;
     background: rgba(0, 0, 0, 0.7);
-    color: white;
 }
-
-/* Input Fields */
-input {
-    font-size: 18px;
-    padding: 5px;
-    margin: 5px;
-    width: 200px;
-    text-align: center;
-    border: 2px solid white;
-    background: black;
-    color: white;
-}
-
-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-/* Confirm Identity Button */
-#confirm-identity {
-    font-size: 18px;
-    padding: 10px 20px;
-    margin: 10px;
-    border: none;
-    background: #ffcc00;
-    color: black;
-    cursor: pointer;
-}
-
-#confirm-identity:hover {
-    background: #ffaa00;
-}
-
