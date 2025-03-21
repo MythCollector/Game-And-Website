@@ -9,7 +9,7 @@ body, html {
     color: white; /* Ensures all text is white */
 }
 
-/* Title screen */
+/* Title Screen */
 #title-screen {
     position: absolute;
     width: 100%;
@@ -37,15 +37,15 @@ body, html {
     transform: scale(1.1);
 }
 
-/* Ensure only the game screen is visible at the right time */
+/* Game Screen */
 #game-screen {
-    display: none; /* Hidden at start */
+    display: none;
     width: 100%;
     height: 100vh;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-around;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.5);
     color: white;
 }
@@ -53,31 +53,46 @@ body, html {
 /* Sidebar HUD */
 #hud {
     position: absolute;
-    left: 20px;
     top: 20px;
+    left: 20px;
     background: rgba(0, 0, 0, 0.6);
     padding: 15px;
     border-radius: 5px;
     text-align: left;
 }
 
-/* Character Image Space */
-#character-space {
-    width: 200px;
-    height: 300px;
+#hud p {
+    margin: 5px;
+    font-size: 18px;
 }
 
-#character-img {
-    width: 100%;
-    height: auto;
+/* Undo Button */
+#undo-button {
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 5px 10px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-/* Story Area */
+#undo-button:hover {
+    background: #d63030;
+}
+
+/* Story Box */
 #story {
-    width: 50%;
+    width: 60%;
     background: rgba(0, 0, 0, 0.7);
     padding: 20px;
     border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+#story-text {
+    font-size: 20px;
 }
 
 /* Choice Buttons */
@@ -96,13 +111,10 @@ body, html {
     background: #ffaa00;
     transform: scale(1.1);
 }
-/* Hide customization and game screens at the start */
-#customization-screen {
-    display: none;
-}
 
-/* Customization screen styling */
-#customization-screen {
+/* Hide the Identity Form at the Start */
+#identity-form {
+    display: none;
     position: absolute;
     width: 100%;
     height: 100vh;
@@ -114,14 +126,42 @@ body, html {
     color: white;
 }
 
-/* Character Preview */
-#character-preview-container {
-    position: relative;
-    display: inline-block;
+/* Input Fields */
+input {
+    font-size: 18px;
+    padding: 5px;
+    margin: 5px;
+    width: 200px;
+    text-align: center;
+    border: 2px solid white;
+    background: black;
+    color: white;
 }
 
-#characterCanvas {
-    background: url('characters/wolf_base.png') no-repeat center center;
-    background-size: contain;
-    border: 2px solid white;
+input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
 }
+
+/* Confirm Identity Button */
+#confirm-identity {
+    font-size: 18px;
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    background: #ffcc00;
+    color: black;
+    cursor: pointer;
+}
+
+#confirm-identity:hover {
+    background: #ffaa00;
+}
+
+/* Character Image Placeholder (If Needed in the Future) */
+#character-space {
+    display: none; /* Hide since we're using text-based identity */
+    width: 200px;
+    height: 300px;
+}
+
+/* Add any extra animations if needed */
