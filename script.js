@@ -1,6 +1,6 @@
 // Game variables
-let energy = 100;
-let hunger = 50;
+let health = 100;
+let soulPoints = 0;
 let history = []; // Stores past states for undo
 
 // Ensure the correct screens are shown at the start
@@ -31,57 +31,97 @@ function createButton(text, optionNumber) {
 // Store game state before making a change (for undo)
 function saveState() {
     history.push({
-        energy: energy,
-        hunger: hunger,
+        health: health,
+        soulPoints: soulPoints,
         story: document.getElementById("story-text").textContent,
         choicesHTML: document.getElementById("choices").innerHTML
     });
 }
 
-// Handle choices and story progression
+// Function to trigger a random battle (30% chance)
+function randomBattle() {
+    let chance = Math.random();
+    if (chance < 0.3) { // 30% chance to trigger a battle
+        startBattle();
+        return true; // Stop further execution of choices
+    }
+    return false;
+}
+
+// Function to start a battle
+function startBattle() {
+    let storyText = document.getElementById("story-text");
+    let choicesDiv = document.getElementById("choices");
+
+    // Random enemy level (1 to 5)
+    let enemyLevel = Math.floor(Math.random() * 5) + 1;  
+    let enemyHealth = enemyLevel * 25; // Higher level = more health
+
+    storyText.textContent = `A level ${enemyLevel} beast appears! It looks ready to attack!`;
+    choicesDiv.innerHTML = "";
+    choicesDiv.appendChild(createButton("Fight", `fight-${enemyLevel}-${enemyHealth}`));
+    choicesDiv.appendChild(createButton("Flee", "flee"));
+}
+
+// Handle choices and battle system
 function chooseOption(option) {
-    saveState(); // Save the current state before making changes
+    saveState();
 
     let storyText = document.getElementById("story-text");
     let choicesDiv = document.getElementById("choices");
     choicesDiv.innerHTML = ""; // Clear old choices
 
-    if (option === 1) {
+    // Battle logic
+    if (option.startsWith("fight")) {
+        let splitData = option.split("-");
+        let enemyLevel = parseInt(splitData[1]);  
+        let enemyHealth = parseInt(splitData[2]);  
+
+        let damage = Math.floor(Math.random() * 20) + 10; // Enemy deals 10-30 damage
+        let playerDamage = Math.floor(Math.random() * 20) + 15; // Player deals 15-35 damage
+
+        health -= damage;
+        enemyHealth -= playerDamage;
+
+        if (enemyHealth <= 0) {
+            let soulPointsEarned = enemyLevel * 2; // Higher level = more Soul Points
+            soulPoints += soulPointsEarned;
+
+            storyText.textContent = `You defeated the level ${enemyLevel} beast! You gained ${soulPointsEarned} Soul Points!`;
+            health += 10; // Restore some health
+            if (health > 100) health = 100; // Cap health at 100
+        } else {
+            storyText.textContent = `The battle continues! The enemy has ${enemyHealth} health left.`;
+            choicesDiv.appendChild(createButton("Attack again", `fight-${enemyLevel}-${enemyHealth}`));
+        }
+    } 
+    else if (option === "flee") {
+        let escapeChance = Math.random();
+        if (escapeChance < 0.5) {
+            storyText.textContent = "You successfully escaped!";
+        } else {
+            storyText.textContent = "You try to run, but the creature catches up!";
+            choicesDiv.appendChild(createButton("Fight", "fight"));
+        }
+    } 
+    else if (option === 1) {
         storyText.textContent = "You stand up, your legs shaky beneath you. The forest stretches endlessly around you.";
         choicesDiv.appendChild(createButton("Follow the trail", 3));
-        choicesDiv.appendChild(createButton("Look for food", 4));
-    } 
-    else if (option === 2) {
-        storyText.textContent = "You stay still, listening to the sounds of the forest.";
-        choicesDiv.appendChild(createButton("Move toward the water", 5));
-        choicesDiv.appendChild(createButton("Stay and observe", 6));
+        choicesDiv.appendChild(createButton("Look for shelter", 4));
     } 
     else if (option === 3) {
-        storyText.textContent = "The path winds through the forest. Suddenly, you hear a rustling in the bushes.";
-        choicesDiv.appendChild(createButton("Investigate the noise", 7));
-        choicesDiv.appendChild(createButton("Ignore it and keep walking", 8));
+        storyText.textContent = "You follow the trail deeper into the woods...";
+        if (!randomBattle()) {
+            choicesDiv.appendChild(createButton("Continue walking", 5));
+        }
     }
     else if (option === 4) {
-        storyText.textContent = "You sniff the air, looking for food. You spot some berries nearby.";
-        choicesDiv.appendChild(createButton("Eat the berries", 9));
-        choicesDiv.appendChild(createButton("Keep searching", 10));
+        storyText.textContent = "You find an abandoned den. It seems safe.";
+        choicesDiv.appendChild(createButton("Rest here", 6));
     }
     else if (option === 5 || option === 6) {
         storyText.textContent = "You reach a lake. The water is crystal clear, reflecting the trees.";
         choicesDiv.appendChild(createButton("Look into the water", "reachLake"));
-    } 
-    else if (option === 7) {
-        storyText.textContent = "You step closer. A pair of glowing eyes stare back at you.";
-        choicesDiv.appendChild(createButton("Run away!", 11));
-        choicesDiv.appendChild(createButton("Stand your ground", 12));
-    } 
-    else if (option === 11) {
-        storyText.textContent = "You run as fast as you can, not looking back.";
-        choicesDiv.appendChild(createButton("Find a hiding spot", 13));
-    }
-    else if (option === 12) {
-        storyText.textContent = "The glowing eyes blink, and a wolf steps out, tilting its head at you.";
-        choicesDiv.appendChild(createButton("Try to communicate", 14));
     } 
     else if (option === "reachLake") {
         reachLake(); // Start identity selection
@@ -94,8 +134,8 @@ function chooseOption(option) {
 document.getElementById("undo-button").addEventListener("click", function() {
     if (history.length > 0) {
         let lastState = history.pop();
-        energy = lastState.energy;
-        hunger = lastState.hunger;
+        health = lastState.health;
+        soulPoints = lastState.soulPoints;
         document.getElementById("story-text").textContent = lastState.story;
         document.getElementById("choices").innerHTML = lastState.choicesHTML;
         updateHUD();
@@ -128,10 +168,10 @@ document.getElementById("confirm-identity").addEventListener("click", function()
     document.getElementById("choices").appendChild(createButton("Continue", 15));
 });
 
-// Update HUD (energy & hunger)
+// Update HUD (health & soul points)
 function updateHUD() {
-    document.getElementById("energy").textContent = energy;
-    document.getElementById("hunger").textContent = hunger;
+    document.getElementById("health").textContent = health;
+    document.getElementById("soul-points").textContent = soulPoints;
 }
 
 
