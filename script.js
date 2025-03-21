@@ -3,10 +3,15 @@ let energy = 100;
 let hunger = 50;
 let history = []; // Stores multiple past states
 
+// Ensure only the title screen is visible at first
+window.onload = function() {
+    document.getElementById("game-screen").style.display = "none"; // Hide the game screen
+};
+
 // Play background music when "Start Game" is clicked
 document.getElementById("start-button").addEventListener("click", function() {
-    document.getElementById("title-screen").style.display = "none";
-    document.getElementById("game-screen").style.display = "flex";
+    document.getElementById("title-screen").style.display = "none"; // Hide title screen
+    document.getElementById("game-screen").style.display = "flex"; // Show game screen
 
     let music = document.getElementById("bg-music");
     music.volume = 0.5;
@@ -60,7 +65,7 @@ function chooseOption(option) {
     updateHUD();
 }
 
-// Undo last choice
+// Undo last choice (allows full history navigation)
 document.getElementById("undo-button").addEventListener("click", function() {
     if (history.length > 0) {
         let lastState = history.pop(); // Go back one step
@@ -71,3 +76,4 @@ document.getElementById("undo-button").addEventListener("click", function() {
         updateHUD();
     }
 });
+
