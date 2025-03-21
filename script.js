@@ -1,10 +1,10 @@
 // Game variables
 let energy = 100;
 let hunger = 50;
-let history = []; // Stores past states
-let reachedLake = false; // Track if player has reached the lake
+let history = [];
+let reachedLake = false;
 
-// Ensure correct screens are shown at start
+// Ensure only the title screen is visible at first
 window.onload = function() {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("customization-screen").style.display = "none";
@@ -64,27 +64,40 @@ function reachLake() {
     document.getElementById("customization-screen").style.display = "flex";
 }
 
-// Character Customization Logic
-document.getElementById("species-select").addEventListener("change", updateCharacterPreview);
-document.getElementById("fur-color-select").addEventListener("change", updateCharacterPreview);
-document.getElementById("eye-color-select").addEventListener("change", updateCharacterPreview);
+// Character Customization Logic (Canvas Coloring)
+document.getElementById("species-select").addEventListener("change", updateCharacterCanvas);
+document.getElementById("fur-color-select").addEventListener("change", updateCharacterCanvas);
+document.getElementById("eye-color-select").addEventListener("change", updateCharacterCanvas);
 
-function updateCharacterPreview() {
-    let species = document.getElementById("species-select").value;
+function updateCharacterCanvas() {
     let furColor = document.getElementById("fur-color-select").value;
-    
-    let imagePath = `characters/${species}_${furColor}.png`;
-    document.getElementById("character-preview").src = imagePath;
+    let eyeColor = document.getElementById("eye-color-select").value;
+    let canvas = document.getElementById("characterCanvas");
+    let ctx = canvas.getContext("2d");
+
+    let img = new Image();
+    img.src = "characters/wolf_base.png"; // Load the base image
+
+    img.onload = function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Apply fur color overlay
+        ctx.globalCompositeOperation = "source-atop";
+        ctx.fillStyle = furColor;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "source-over";
+
+        // Apply eye color
+        ctx.fillStyle = eyeColor;
+        ctx.beginPath();
+        ctx.arc(100, 120, 5, 0, Math.PI * 2);
+        ctx.fill();
+    };
 }
 
 // Confirm Character and Continue Game
 document.getElementById("confirm-character").addEventListener("click", function() {
     document.getElementById("customization-screen").style.display = "none";
     document.getElementById("game-screen").style.display = "flex";
-
-    let selectedSpecies = document.getElementById("species-select").value;
-    let selectedFur = document.getElementById("fur-color-select").value;
-    let imagePath = `characters/${selectedSpecies}_${selectedFur}.png`;
-
-    document.getElementById("character-space").innerHTML = `<img id="character-img" src="${imagePath}" alt="Character">`;
 });
