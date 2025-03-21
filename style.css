@@ -6,7 +6,7 @@ body, html {
     background: url('background.jpg') no-repeat center center fixed;
     background-size: cover;
     font-family: Arial, sans-serif;
-    color: white; /* Ensures all text is white */
+    color: white;
 }
 
 /* Title Screen */
@@ -157,11 +157,3 @@ input::placeholder {
     background: #ffaa00;
 }
 
-/* Character Image Placeholder (If Needed in the Future) */
-#character-space {
-    display: none; /* Hide since we're using text-based identity */
-    width: 200px;
-    height: 300px;
-}
-
-/* Add any extra animations if needed */
