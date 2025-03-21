@@ -3,16 +3,17 @@ let health = 100;
 let soulPoints = 0;
 let history = []; // Stores past states for undo
 
-// Ensure the correct screens are shown at the start
 window.onload = function() {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("identity-form").style.display = "none";
+    document.getElementById("hud").style.display = "none";  // Hide HUD initially
 };
 
 // Start game when the button is clicked
 document.getElementById("start-button").addEventListener("click", function() {
     document.getElementById("title-screen").style.display = "none";
     document.getElementById("game-screen").style.display = "flex";
+    document.getElementById("hud").style.display = "block";  // Show HUD when game starts
 
     let music = document.getElementById("bg-music");
     music.volume = 0.5;
