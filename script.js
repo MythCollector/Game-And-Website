@@ -2,12 +2,11 @@
 let energy = 100;
 let hunger = 50;
 let history = [];
-let reachedLake = false;
 
 // Ensure only the title screen is visible at first
 window.onload = function() {
     document.getElementById("game-screen").style.display = "none";
-    document.getElementById("customization-screen").style.display = "none";
+    document.getElementById("identity-form").style.display = "none";
 };
 
 // Start the game when the button is clicked
@@ -58,43 +57,29 @@ function chooseOption(option) {
     updateHUD();
 }
 
-// Trigger character customization at the lake
+// Show identity form at the lake
 function reachLake() {
     document.getElementById("game-screen").style.display = "none";
-    document.getElementById("customization-screen").style.display = "flex";
+    document.getElementById("identity-form").style.display = "flex";
 }
 
-// Character Customization Logic (Canvas Coloring)
-document.getElementById("species-select").addEventListener("change", updateCharacterCanvas);
-document.getElementById("fur-color-select").addEventListener("change", updateCharacterCanvas);
-document.getElementById("eye-color-select").addEventListener("change", updateCharacterCanvas);
+// Save player's custom identity and return to the game
+document.getElementById("confirm-identity").addEventListener("click", function() {
+    let species = document.getElementById("species-input").value.trim() || "Unknown";
+    let furColor = document.getElementById("fur-color-input").value.trim() || "Unknown";
+    let eyeColor = document.getElementById("eye-color-input").value.trim() || "Unknown";
 
-function updateCharacterCanvas() {
-    let furColor = document.getElementById("fur-color-select").value;
-    let eyeColor = document.getElementById("eye-color-select").value;
-    let canvas = document.getElementById("characterCanvas");
-    let ctx = canvas.getContext("2d");
+    document.getElementById("species").textContent = species;
+    document.getElementById("fur-color").textContent = furColor;
+    document.getElementById("eye-color").textContent = eyeColor;
 
-    let img = new Image();
-    img.src = "characters/wolf_base.png"; // Load the base image
+    document.getElementById("identity-form").style.display = "none";
+    document.getElementById("game-screen").style.display = "flex";
 
-    img.onload = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-        // Apply fur color overlay
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = furColor;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.globalCompositeOperation = "source-over";
-
-        // Apply eye color
-        ctx.fillStyle = eyeColor;
-        ctx.beginPath();
-        ctx.arc(100, 120, 5, 0, Math.PI * 2);
-        ctx.fill();
-    };
-}
+    // Continue the game after identity selection
+    document.getElementById("story-text").textContent = "As you stare at your reflection, memories start to return... You are a " + species + ".";
+    document.getElementById("choices").innerHTML = `<button class="choice-btn" onclick="chooseOption(5)">Continue</button>`;
+});
 
 // Confirm Character and Continue Game
 document.getElementById("confirm-character").addEventListener("click", function() {
