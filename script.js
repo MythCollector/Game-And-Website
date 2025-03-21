@@ -1,17 +1,19 @@
 // Game variables
 let energy = 100;
 let hunger = 50;
-let history = []; // Stores multiple past states
+let history = []; // Stores past states
+let reachedLake = false; // Track if player has reached the lake
 
-// Ensure only the title screen is visible at first
+// Ensure correct screens are shown at start
 window.onload = function() {
-    document.getElementById("game-screen").style.display = "none"; // Hide the game screen
+    document.getElementById("game-screen").style.display = "none";
+    document.getElementById("customization-screen").style.display = "none";
 };
 
-// Play background music when "Start Game" is clicked
+// Start the game when the button is clicked
 document.getElementById("start-button").addEventListener("click", function() {
-    document.getElementById("title-screen").style.display = "none"; // Hide title screen
-    document.getElementById("game-screen").style.display = "flex"; // Show game screen
+    document.getElementById("title-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "flex";
 
     let music = document.getElementById("bg-music");
     music.volume = 0.5;
@@ -24,7 +26,7 @@ function updateHUD() {
     document.getElementById("hunger").textContent = hunger;
 }
 
-// Store current game state before making a change
+// Store game state before changes
 function saveState() {
     history.push({
         energy: energy,
@@ -36,44 +38,53 @@ function saveState() {
 
 // Handle choices
 function chooseOption(option) {
-    saveState(); // Save the current state before making changes
+    saveState();
 
     let storyText = document.getElementById("story-text");
     let choicesDiv = document.getElementById("choices");
-
-    // Clear previous buttons
     choicesDiv.innerHTML = "";
 
     if (option === 1) {
-        storyText.textContent = "You cautiously follow the path, ears perked for any sign of danger.";
-        energy -= 5;
-        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(3)">Continue walking</button>`;
+        storyText.textContent = "You stand up, your body trembling. The forest stretches endlessly around you. You spot a faint trail leading deeper into the woods.";
+        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(3)">Follow the trail</button>`;
     } else if (option === 2) {
-        storyText.textContent = "You venture into the trees, feeling the damp leaves beneath your paws.";
-        hunger -= 10;
-        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(4)">Search for food</button>`;
-    } else if (option === 3) {
-        storyText.textContent = "You keep moving forward, feeling the wind against your fur.";
-        energy -= 5;
-        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(5)">Look around</button>`;
-    } else if (option === 4) {
-        storyText.textContent = "You sniff the air and spot a small prey animal nearby.";
-        hunger += 10;
-        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(6)">Attempt to catch it</button>`;
+        storyText.textContent = "You remain still, listening to the wind rustling the trees. Somewhere in the distance, you hear water flowing.";
+        choicesDiv.innerHTML += `<button class="choice-btn" onclick="chooseOption(4)">Move toward the sound of water</button>`;
+    } else if (option === 3 || option === 4) {
+        storyText.textContent = "After wandering for what feels like hours, you come across a shimmering lake. The water is so still, it’s like a mirror...";
+        choicesDiv.innerHTML += `<button class="choice-btn" onclick="reachLake()">Look into the water</button>`;
     }
-
+    
     updateHUD();
 }
 
-// Undo last choice (allows full history navigation)
-document.getElementById("undo-button").addEventListener("click", function() {
-    if (history.length > 0) {
-        let lastState = history.pop(); // Go back one step
-        energy = lastState.energy;
-        hunger = lastState.hunger;
-        document.getElementById("story-text").textContent = lastState.story;
-        document.getElementById("choices").innerHTML = lastState.choicesHTML;
-        updateHUD();
-    }
-});
+// Trigger character customization at the lake
+function reachLake() {
+    document.getElementById("game-screen").style.display = "none";
+    document.getElementById("customization-screen").style.display = "flex";
+}
 
+// Character Customization Logic
+document.getElementById("species-select").addEventListener("change", updateCharacterPreview);
+document.getElementById("fur-color-select").addEventListener("change", updateCharacterPreview);
+document.getElementById("eye-color-select").addEventListener("change", updateCharacterPreview);
+
+function updateCharacterPreview() {
+    let species = document.getElementById("species-select").value;
+    let furColor = document.getElementById("fur-color-select").value;
+    
+    let imagePath = `characters/${species}_${furColor}.png`;
+    document.getElementById("character-preview").src = imagePath;
+}
+
+// Confirm Character and Continue Game
+document.getElementById("confirm-character").addEventListener("click", function() {
+    document.getElementById("customization-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "flex";
+
+    let selectedSpecies = document.getElementById("species-select").value;
+    let selectedFur = document.getElementById("fur-color-select").value;
+    let imagePath = `characters/${selectedSpecies}_${selectedFur}.png`;
+
+    document.getElementById("character-space").innerHTML = `<img id="character-img" src="${imagePath}" alt="Character">`;
+});
