@@ -57,24 +57,38 @@ function chooseOption(option) {
     updateHUD();
 }
 
+document.getElementById("start-button").addEventListener("click", function() {
+    document.getElementById("title-screen").style.display = "none";
+    document.getElementById("game-screen").style.display = "flex";
+
+    let music = document.getElementById("bg-music");
+    music.volume = 0.5;
+    music.play().catch(error => console.log("Music play blocked by browser."));
+});
+
 // Show identity form at the lake
 function reachLake() {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("identity-form").style.display = "flex";
 }
 
-// Save player's custom identity and return to the game
+// Save identity and update HUD
 document.getElementById("confirm-identity").addEventListener("click", function() {
     let species = document.getElementById("species-input").value.trim() || "Unknown";
+    let skinType = document.getElementById("skin-type-input").value.trim() || "Unknown";
     let furColor = document.getElementById("fur-color-input").value.trim() || "Unknown";
     let eyeColor = document.getElementById("eye-color-input").value.trim() || "Unknown";
 
     document.getElementById("species").textContent = species;
+    document.getElementById("skin-type").textContent = skinType;
     document.getElementById("fur-color").textContent = furColor;
     document.getElementById("eye-color").textContent = eyeColor;
 
     document.getElementById("identity-form").style.display = "none";
     document.getElementById("game-screen").style.display = "flex";
+
+    document.getElementById("story-text").textContent = `As you stare at your reflection, memories start to return... You are a ${species} with ${furColor} ${skinType}.`;
+});
 
     // Continue the game after identity selection
     document.getElementById("story-text").textContent = "As you stare at your reflection, memories start to return... You are a " + species + ".";
