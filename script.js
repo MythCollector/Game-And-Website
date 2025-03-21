@@ -20,6 +20,13 @@ document.getElementById("start-button").addEventListener("click", function() {
     music.play().catch(error => console.log("Music play blocked by browser. Click to start."));
 });
 
+function reachLake() {
+    document.getElementById("game-screen").style.display = "none";
+    document.getElementById("hud").style.display = "none";  // Hide HUD during identity selection
+    document.getElementById("identity-form").style.display = "flex";
+}
+
+
 // Function to create buttons dynamically
 function createButton(text, optionNumber) {
     let button = document.createElement("button");
